@@ -1,0 +1,5 @@
+import * as React from "react";
+
+export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return <input className="input input-bordered w-full" {...props} />;
+}
