@@ -167,7 +167,7 @@ function ExplorePageContent() {
               <EmptyState message="Failed to load services. Please try again later." />
             ) : isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
+                {[...Array(8)].map((_, i) => (
                   <SkeletonCard key={i} />
                 ))}
               </div>

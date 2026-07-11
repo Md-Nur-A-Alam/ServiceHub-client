@@ -74,7 +74,11 @@ export function FilterPanel({ filters, onChange }: FilterPanelProps) {
           {categories.map((cat) => {
             const isChecked = localFilters.category.split(",").includes(cat.id);
             return (
-              <label key={cat.id} className="flex items-center gap-3 cursor-pointer group">
+              <label 
+                key={cat.id} 
+                className="flex items-center gap-3 cursor-pointer group"
+                onClick={() => handleCategoryToggle(cat.id)}
+              >
                 <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${isChecked ? 'bg-primary border-primary text-on-primary' : 'border-outline-variant bg-surface group-hover:border-primary/50'}`}>
                   {isChecked && <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                 </div>
