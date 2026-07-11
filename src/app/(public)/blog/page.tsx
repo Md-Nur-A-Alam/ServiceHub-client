@@ -1,3 +1,3 @@
 export default function BlogPage() {
-  return <div className="p-sm">Blog Page Placeholder</div>;
+  return <div className="p-6">Blog Page Placeholder</div>;
 }

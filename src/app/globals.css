@@ -100,16 +100,6 @@
   --radius-xl: 1.5rem;    /* cards, modals -> use for 16px card radius */
   --radius-full: 9999px;  /* badges, pills, avatars */
 
-  /* Spacing */
-  --space-base: 4px;
-  --space-xs: 8px;
-  --space-sm: 16px;
-  --space-md: 24px;
-  --space-lg: 32px;
-  --space-xl: 48px;
-  --space-xxl: 80px;
-  --container-max: 1280px;
-  --gutter: 24px;
 }
 
 .dark {
@@ -232,13 +222,7 @@
   --radius-full: var(--radius-full);
   --radius-DEFAULT: var(--radius);
 
-  /* Spacing */
-  --spacing-xs: var(--space-xs);
-  --spacing-sm: var(--space-sm);
-  --spacing-md: var(--space-md);
-  --spacing-lg: var(--space-lg);
-  --spacing-xl: var(--space-xl);
-  --spacing-xxl: var(--space-xxl);
+
 
   /* Fonts */
   --font-manrope: var(--font-manrope);
@@ -256,70 +240,4 @@
   }
 }
 
-/* Typography Utility Scales */
-@utility text-h1 {
-  font-size: 3rem;
-  line-height: 1.1;
-  font-weight: 800;
-  font-family: var(--font-manrope), sans-serif;
-  letter-spacing: -0.02em;
-}
-@utility text-h1-mobile {
-  font-size: 2rem;
-  line-height: 1.2;
-  font-weight: 800;
-  font-family: var(--font-manrope), sans-serif;
-  letter-spacing: -0.02em;
-}
-@utility text-h2 {
-  font-size: 2.5rem;
-  line-height: 1.2;
-  font-weight: 700;
-  font-family: var(--font-manrope), sans-serif;
-  letter-spacing: -0.02em;
-}
-@utility text-h2-mobile {
-  font-size: 1.75rem;
-  line-height: 1.2;
-  font-weight: 700;
-  font-family: var(--font-manrope), sans-serif;
-  letter-spacing: -0.02em;
-}
-@utility text-h3 {
-  font-size: 2rem;
-  line-height: 1.2;
-  font-weight: 600;
-  font-family: var(--font-manrope), sans-serif;
-  letter-spacing: -0.01em;
-}
-@utility text-h4 {
-  font-size: 1.75rem;
-  line-height: 1.3;
-  font-weight: 600;
-  font-family: var(--font-manrope), sans-serif;
-  letter-spacing: -0.01em;
-}
-@utility text-body-lg {
-  font-size: 1.125rem;
-  line-height: 1.6;
-  font-weight: 400;
-  font-family: var(--font-inter), sans-serif;
-}
-@utility text-body {
-  font-size: 1rem;
-  line-height: 1.5;
-  font-weight: 400;
-  font-family: var(--font-inter), sans-serif;
-}
-@utility text-small {
-  font-size: 0.875rem;
-  line-height: 1.4;
-  font-weight: 500;
-  font-family: var(--font-inter), sans-serif;
-}
-@utility text-micro {
-  font-size: 0.75rem;
-  line-height: 1.0;
-  font-weight: 600;
-  font-family: var(--font-inter), sans-serif;
-}
+

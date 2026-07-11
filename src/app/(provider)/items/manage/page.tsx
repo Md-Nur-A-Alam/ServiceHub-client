@@ -1,3 +1,3 @@
 export default function ManageServicesPage() {
-  return <div className="p-sm">Manage Services Page Placeholder</div>;
+  return <div className="p-6">Manage Services Page Placeholder</div>;
 }

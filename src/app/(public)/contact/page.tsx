@@ -1,3 +1,3 @@
 export default function ContactPage() {
-  return <div className="p-sm">Contact Page Placeholder</div>;
+  return <div className="p-6">Contact Page Placeholder</div>;
 }

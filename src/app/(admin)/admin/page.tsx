@@ -1,3 +1,3 @@
 export default function AdminDashboardPage() {
-  return <div className="p-sm">Admin Dashboard Page Placeholder</div>;
+  return <div className="p-6">Admin Dashboard Page Placeholder</div>;
 }

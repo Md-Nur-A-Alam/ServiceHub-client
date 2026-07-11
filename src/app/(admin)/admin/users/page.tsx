@@ -1,3 +1,3 @@
 export default function AdminUsersPage() {
-  return <div className="p-sm">Admin Users Page Placeholder</div>;
+  return <div className="p-6">Admin Users Page Placeholder</div>;
 }

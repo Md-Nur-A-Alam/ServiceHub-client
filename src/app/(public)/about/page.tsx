@@ -1,3 +1,3 @@
 export default function AboutPage() {
-  return <div className="p-sm">About Page Placeholder</div>;
+  return <div className="p-6">About Page Placeholder</div>;
 }

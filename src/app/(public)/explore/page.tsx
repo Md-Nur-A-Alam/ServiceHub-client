@@ -1,3 +1,3 @@
 export default function ExplorePage() {
-  return <div className="p-sm">Explore Page Placeholder</div>;
+  return <div className="p-6">Explore Page Placeholder</div>;
 }

@@ -1,3 +1,3 @@
 export default function AdminAuditLogPage() {
-  return <div className="p-sm">Admin Audit Log Page Placeholder</div>;
+  return <div className="p-6">Admin Audit Log Page Placeholder</div>;
 }

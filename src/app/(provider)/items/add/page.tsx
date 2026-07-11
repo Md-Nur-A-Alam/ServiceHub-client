@@ -1,3 +1,3 @@
 export default function AddServicePage() {
-  return <div className="p-sm">Add Service Page Placeholder</div>;
+  return <div className="p-6">Add Service Page Placeholder</div>;
 }

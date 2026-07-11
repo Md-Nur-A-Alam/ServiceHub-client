@@ -1,3 +1,3 @@
 export default function WishlistPage() {
-  return <div className="p-sm">Wishlist Page Placeholder</div>;
+  return <div className="p-6">Wishlist Page Placeholder</div>;
 }
