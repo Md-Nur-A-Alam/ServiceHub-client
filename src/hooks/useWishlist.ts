@@ -9,7 +9,7 @@ export function useWishlist() {
     queryKey: ["wishlist", session?.user?.id],
     queryFn: async () => {
       if (!session) return [];
-      const response = await apiClient.get("/users/me/wishlist");
+      const response = await apiClient.get("/favorites");
       return response.data.data || [];
     },
     enabled: !!session,

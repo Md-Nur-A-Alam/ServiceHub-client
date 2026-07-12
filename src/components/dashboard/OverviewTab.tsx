@@ -33,7 +33,7 @@ export function OverviewTab({ role, onNavigate }: OverviewTabProps) {
   const { data: wishlistData, isLoading: wishlistLoading } = useQuery({
     queryKey: ["my-wishlist"],
     queryFn: async () => {
-      const response = await apiClient.get("/users/me/wishlist");
+      const response = await apiClient.get("/favorites");
       return response.data.data || [];
     },
     enabled: role === "customer"

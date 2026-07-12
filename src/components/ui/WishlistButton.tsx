@@ -25,8 +25,13 @@ export function WishlistButton({ serviceId, className = "" }: WishlistButtonProp
 
   const toggleMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiClient.patch(`/users/me/wishlist/${serviceId}`);
-      return response.data.data;
+      if (isWishlisted) {
+        const response = await apiClient.delete(`/favorites/${serviceId}`);
+        return { active: false, data: response.data };
+      } else {
+        const response = await apiClient.post(`/favorites`, { serviceId });
+        return { active: true, data: response.data };
+      }
     },
     onMutate: async () => {
       const cacheKey = ["wishlist", session?.user?.id];

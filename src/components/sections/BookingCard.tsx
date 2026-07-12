@@ -9,6 +9,12 @@ import confetti from "canvas-confetti";
 import { apiClient } from "@/lib/api-client";
 import { authClient } from "@/lib/auth-client";
 import { useCreateBooking } from "@/hooks/useBooking";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { CheckoutForm } from "./CheckoutForm";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
+
 
 interface BookingCardProps {
   serviceId: string;
@@ -38,7 +44,9 @@ export function BookingCard({ serviceId, price }: BookingCardProps) {
   const [date, setDate] = useState(tomorrowStr);
   const [timeSlot, setTimeSlot] = useState("");
   const [notes, setNotes] = useState("");
-  const [step, setStep] = useState<"select" | "confirm" | "success">("select");
+  const [step, setStep] = useState<"select" | "confirm" | "payment" | "success">("select");
+  const [clientSecret, setClientSecret] = useState("");
+  const [isGettingIntent, setIsGettingIntent] = useState(false);
 
   // Fetch taken slots for service & selected date
   const { data: takenSlots = [], isLoading: isLoadingSlots } = useQuery({
@@ -70,6 +78,23 @@ export function BookingCard({ serviceId, price }: BookingCardProps) {
       return;
     }
     setStep("confirm");
+  };
+
+  const handleProceedToPayment = async () => {
+    try {
+      setIsGettingIntent(true);
+      const res = await apiClient.post("/payments/create-intent", { serviceId });
+      if (res.data?.success && res.data?.clientSecret) {
+        setClientSecret(res.data.clientSecret);
+        setStep("payment");
+      } else {
+        toast.error("Failed to initialize payment");
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Failed to initialize payment");
+    } finally {
+      setIsGettingIntent(false);
+    }
   };
 
   const handleBook = () => {
@@ -169,13 +194,28 @@ export function BookingCard({ serviceId, price }: BookingCardProps) {
             Back
           </button>
           <button
-            onClick={handleBook}
-            disabled={createBooking.isPending}
+            onClick={handleProceedToPayment}
+            disabled={isGettingIntent}
             className="flex-1 py-2.5 bg-primary text-on-primary rounded-xl font-semibold hover:brightness-110 transition-all text-sm cursor-pointer disabled:opacity-50"
           >
-            {createBooking.isPending ? "Booking..." : "Book Now"}
+            {isGettingIntent ? "Please wait..." : "Proceed to Payment"}
           </button>
         </div>
+      </div>
+    );
+  }
+
+  if (step === "payment" && clientSecret) {
+    return (
+      <div className="bg-surface border border-outline-variant rounded-2xl p-6 shadow-lg max-w-sm w-full mx-auto flex flex-col gap-4">
+        <h3 className="text-lg font-bold text-on-surface font-display">Complete Payment</h3>
+        <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'stripe' } }}>
+          <CheckoutForm 
+            onSuccess={handleBook} 
+            onCancel={() => setStep("confirm")} 
+            isProcessingOverride={createBooking.isPending} 
+          />
+        </Elements>
       </div>
     );
   }

@@ -15,8 +15,8 @@ export function FavoritesTab() {
 
   const removeMutation = useMutation({
     mutationFn: async (serviceId: string) => {
-      const response = await apiClient.patch(`/users/me/wishlist/${serviceId}`);
-      return response.data.data;
+      const response = await apiClient.delete(`/favorites/${serviceId}`);
+      return response.data;
     },
     onSuccess: (data) => {
       toast.success("Removed from wishlist");

@@ -5,6 +5,7 @@ import { Star, MapPin, ShieldCheck, Mail, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ServiceDetailsClient from "./ServiceDetailsClient";
+import { ShareButton } from "@/components/ui/ShareButton";
 
 interface PageProps {
   params: Promise<{ id: string }> | { id: string };
@@ -120,9 +121,12 @@ export default async function ServiceDetailsPage({ params }: PageProps) {
                     {service.category}
                   </span>
                 </div>
-                <h1 className="text-3xl lg:text-4xl font-extrabold text-on-surface leading-tight font-display">
-                  {service.title}
-                </h1>
+                <div className="flex justify-between items-start gap-4">
+                  <h1 className="text-3xl lg:text-4xl font-extrabold text-on-surface leading-tight font-display">
+                    {service.title}
+                  </h1>
+                  <ShareButton title={service.title} text={service.shortDesc} className="shrink-0" />
+                </div>
                 
                 <div className="flex flex-wrap items-center gap-6 text-sm text-on-surface/65">
                   <div className="flex items-center gap-1.5">
@@ -141,12 +145,24 @@ export default async function ServiceDetailsPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Service Hero Image */}
-              <div className="aspect-[16/9] w-full rounded-2xl bg-surface-container flex items-center justify-center border border-outline-variant overflow-hidden">
-                {(service.imageEmoji?.startsWith("http://") || service.imageEmoji?.startsWith("https://") || service.imageEmoji?.startsWith("/")) ? (
-                  <img src={service.imageEmoji} alt={service.title} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-9xl">{service.imageEmoji || "🏠"}</span>
+              {/* Service Hero Image & Gallery */}
+              <div className="space-y-4">
+                <div className="aspect-[16/9] w-full rounded-2xl bg-surface-container flex items-center justify-center border border-outline-variant overflow-hidden">
+                  {(service.imageEmoji?.startsWith("http://") || service.imageEmoji?.startsWith("https://") || service.imageEmoji?.startsWith("/")) ? (
+                    <img src={service.imageEmoji} alt={service.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-9xl">{service.imageEmoji || "🏠"}</span>
+                  )}
+                </div>
+                
+                {service.images && service.images.length > 0 && (
+                  <div className="grid grid-cols-4 gap-3">
+                    {service.images.map((img: string, idx: number) => (
+                      <div key={idx} className="aspect-square rounded-xl overflow-hidden border border-outline-variant hover:opacity-80 transition-opacity cursor-pointer">
+                        <img src={img} alt={`Gallery image ${idx + 1}`} className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
 
