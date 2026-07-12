@@ -143,7 +143,11 @@ export default async function ServiceDetailsPage({ params }: PageProps) {
 
               {/* Service Hero Image */}
               <div className="aspect-[16/9] w-full rounded-2xl bg-surface-container flex items-center justify-center border border-outline-variant overflow-hidden">
-                <span className="text-9xl">{service.imageEmoji || "🏠"}</span>
+                {(service.imageEmoji?.startsWith("http://") || service.imageEmoji?.startsWith("https://") || service.imageEmoji?.startsWith("/")) ? (
+                  <img src={service.imageEmoji} alt={service.title} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-9xl">{service.imageEmoji || "🏠"}</span>
+                )}
               </div>
 
               {/* Description */}

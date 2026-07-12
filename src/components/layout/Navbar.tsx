@@ -143,7 +143,7 @@ export function Navbar() {
               {isLoggedIn ? (
                 <>
                   <NotificationBell />
-                  /* Avatar dropdown (lg+) */
+                  {/* Avatar dropdown (lg+) */}
                   <div className="hidden lg:block relative" ref={avatarRef}>
                   <button
                     onClick={() => setAvatarOpen((v) => !v)}

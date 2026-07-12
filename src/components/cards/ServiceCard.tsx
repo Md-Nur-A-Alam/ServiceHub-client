@@ -37,9 +37,17 @@ export function ServiceCard({
     <article className="group flex flex-col bg-surface border border-outline-variant rounded-2xl overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
       {/* Image container — fixed aspect ratio */}
       <div className={`relative w-full aspect-[4/3] ${imageBg} flex items-center justify-center overflow-hidden`}>
-        <span className="text-6xl transition-transform duration-300 group-hover:scale-110">
-          {imageEmoji}
-        </span>
+        {(imageEmoji?.startsWith("http://") || imageEmoji?.startsWith("https://") || imageEmoji?.startsWith("/")) ? (
+          <img
+            src={imageEmoji}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <span className="text-6xl transition-transform duration-300 group-hover:scale-110">
+            {imageEmoji}
+          </span>
+        )}
         {/* Category badge */}
         <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-surface/90 backdrop-blur-sm text-xs font-semibold text-on-surface border border-outline-variant">
           {category}
