@@ -100,9 +100,8 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 bg-surface transition-all duration-200 ${
-          scrolled ? "border-b border-outline-variant shadow-sm" : ""
-        }`}
+        className={`sticky top-0 z-50 bg-surface transition-all duration-200 ${scrolled ? "border-b border-outline-variant shadow-sm" : ""
+          }`}
       >
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16 gap-2">
@@ -122,11 +121,10 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    pathname === link.href
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === link.href
                       ? "text-primary bg-primary/10"
                       : "text-on-surface/75 hover:text-on-surface hover:bg-surface-container-high"
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -145,64 +143,63 @@ export function Navbar() {
                   <NotificationBell />
                   {/* Avatar dropdown (lg+) */}
                   <div className="hidden lg:block relative" ref={avatarRef}>
-                  <button
-                    onClick={() => setAvatarOpen((v) => !v)}
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer"
-                    aria-label="User menu"
-                    aria-expanded={avatarOpen}
-                  >
-                    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary text-xs font-bold">
-                      {getInitials(user?.name)}
-                    </div>
-                    <span className="text-sm font-medium text-on-surface max-w-[100px] truncate">
-                      {user?.name?.split(" ")[0]}
-                    </span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-on-surface/50 transition-transform ${
-                        avatarOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
+                    <button
+                      onClick={() => setAvatarOpen((v) => !v)}
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer"
+                      aria-label="User menu"
+                      aria-expanded={avatarOpen}
+                    >
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary text-xs font-bold">
+                        {getInitials(user?.name)}
+                      </div>
+                      <span className="text-sm font-medium text-on-surface max-w-[100px] truncate">
+                        {user?.name?.split(" ")[0]}
+                      </span>
+                      <ChevronDown
+                        className={`w-4 h-4 text-on-surface/50 transition-transform ${avatarOpen ? "rotate-180" : ""
+                          }`}
+                      />
+                    </button>
 
-                  {/* Dropdown */}
-                  {avatarOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-52 bg-surface border border-outline-variant rounded-xl shadow-lg py-1 z-50">
-                      <div className="px-4 py-2 border-b border-outline-variant">
-                        <p className="text-sm font-semibold text-on-surface truncate">{user?.name}</p>
-                        <p className="text-xs text-on-surface/50 truncate">{user?.email}</p>
-                      </div>
-                      <Link
-                        href="/dashboard"
-                        onClick={() => setAvatarOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface hover:bg-surface-container-high transition-colors"
-                      >
-                        <LayoutDashboard className="w-4 h-4" /> Dashboard
-                      </Link>
-                      <Link
-                        href="/profile"
-                        onClick={() => setAvatarOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface hover:bg-surface-container-high transition-colors"
-                      >
-                        <User className="w-4 h-4" /> Profile
-                      </Link>
-                      <Link
-                        href="/settings"
-                        onClick={() => setAvatarOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface hover:bg-surface-container-high transition-colors"
-                      >
-                        <Settings className="w-4 h-4" /> Settings
-                      </Link>
-                      <div className="border-t border-outline-variant mt-1">
-                        <button
-                          onClick={() => { handleLogout(); setAvatarOpen(false); }}
-                          className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-error hover:bg-error/10 transition-colors cursor-pointer"
+                    {/* Dropdown */}
+                    {avatarOpen && (
+                      <div className="absolute right-0 top-full mt-2 w-52 bg-surface border border-outline-variant rounded-xl shadow-lg py-1 z-50">
+                        <div className="px-4 py-2 border-b border-outline-variant">
+                          <p className="text-sm font-semibold text-on-surface truncate">{user?.name}</p>
+                          <p className="text-xs text-on-surface/50 truncate">{user?.email}</p>
+                        </div>
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setAvatarOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface hover:bg-surface-container-high transition-colors"
                         >
-                          <LogOut className="w-4 h-4" /> Log Out
-                        </button>
+                          <LayoutDashboard className="w-4 h-4" /> Dashboard
+                        </Link>
+                        <Link
+                          href="/profile"
+                          onClick={() => setAvatarOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface hover:bg-surface-container-high transition-colors"
+                        >
+                          <User className="w-4 h-4" /> Profile
+                        </Link>
+                        <Link
+                          href="/settings"
+                          onClick={() => setAvatarOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface hover:bg-surface-container-high transition-colors"
+                        >
+                          <Settings className="w-4 h-4" /> Settings
+                        </Link>
+                        <div className="border-t border-outline-variant mt-1">
+                          <button
+                            onClick={() => { handleLogout(); setAvatarOpen(false); }}
+                            className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-error hover:bg-error/10 transition-colors cursor-pointer"
+                          >
+                            <LogOut className="w-4 h-4" /> Log Out
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
                 </>
               ) : (
                 /* Auth buttons (md+) */
@@ -226,9 +223,8 @@ export function Navbar() {
               <button
                 ref={hamburgerRef}
                 onClick={() => setDrawerOpen(true)}
-                className={`flex items-center justify-center w-10 h-10 rounded-lg text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer ${
-                  isLoggedIn ? "lg:hidden" : "md:hidden"
-                }`}
+                className={`flex items-center justify-center w-10 h-10 rounded-lg text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer ${isLoggedIn ? "lg:hidden" : "md:hidden"
+                  }`}
                 aria-label="Open navigation menu"
                 aria-expanded={drawerOpen}
               >
