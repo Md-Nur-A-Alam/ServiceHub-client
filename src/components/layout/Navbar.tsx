@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, ChevronDown, LogOut, User, Settings, LayoutDashboard } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileDrawer } from "./MobileDrawer";
+import { NotificationBell } from "./NotificationBell";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -140,8 +141,10 @@ export function Navbar() {
               </div>
 
               {isLoggedIn ? (
-                /* Avatar dropdown (lg+) */
-                <div className="hidden lg:block relative" ref={avatarRef}>
+                <>
+                  <NotificationBell />
+                  /* Avatar dropdown (lg+) */
+                  <div className="hidden lg:block relative" ref={avatarRef}>
                   <button
                     onClick={() => setAvatarOpen((v) => !v)}
                     className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer"
@@ -200,6 +203,7 @@ export function Navbar() {
                     </div>
                   )}
                 </div>
+                </>
               ) : (
                 /* Auth buttons (md+) */
                 <div className="hidden md:flex items-center gap-2">

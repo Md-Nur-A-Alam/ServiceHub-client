@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Star, MapPin, Heart } from "lucide-react";
+import { Star, MapPin } from "lucide-react";
+import { WishlistButton } from "../ui/WishlistButton";
 
 export interface ServiceCardProps {
   id: string;
@@ -44,12 +45,7 @@ export function ServiceCard({
           {category}
         </span>
         {/* Wishlist button */}
-        <button
-          aria-label="Save to wishlist"
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface/90 backdrop-blur-sm border border-outline-variant flex items-center justify-center text-on-surface/50 hover:text-error hover:border-error transition-colors cursor-pointer"
-        >
-          <Heart className="w-4 h-4" />
-        </button>
+        <WishlistButton serviceId={id} className="absolute top-3 right-3" />
         {/* Badges */}
         {badges.length > 0 && (
           <div className="absolute bottom-3 left-3 flex gap-1.5 flex-wrap">
