@@ -12,7 +12,7 @@ interface PageProps {
 }
 
 async function getService(id: string) {
-  const serverUrl = process.env.SERVER_PRODUCTION_URL || process.env.NEXT_PUBLIC_SERVER_URL || process.env.SERVER_URL || "http://localhost:8000";
+  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL as string;
   try {
     const res = await fetch(`${serverUrl}/api/v1/services/${id}`, {
       next: { revalidate: 10 }, // cache for 10 seconds
