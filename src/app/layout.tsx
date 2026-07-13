@@ -4,6 +4,8 @@ import { ThemeProvider } from "@/components/layout/theme-provider";
 import { QueryProvider } from "@/lib/query-client";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,6 +35,7 @@ export default function RootLayout({
             <Footer />
           </ThemeProvider>
         </QueryProvider>
+        <ToastContainer position="top-right" autoClose={3000} />
       </body>
     </html>
   );
