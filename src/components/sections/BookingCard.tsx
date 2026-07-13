@@ -83,7 +83,12 @@ export function BookingCard({ serviceId, price }: BookingCardProps) {
   const handleProceedToPayment = async () => {
     try {
       setIsGettingIntent(true);
-      const res = await apiClient.post("/payments/create-intent", { serviceId });
+      const res = await apiClient.post("/payments/create-intent", { 
+        serviceId,
+        date,
+        timeSlot,
+        notes 
+      });
       if (res.data?.success && res.data?.clientSecret) {
         setClientSecret(res.data.clientSecret);
         setStep("payment");
@@ -98,14 +103,8 @@ export function BookingCard({ serviceId, price }: BookingCardProps) {
   };
 
   const handleBook = () => {
-    createBooking.mutate(
-      { serviceId, date, timeSlot, notes },
-      {
-        onSuccess: () => {
-          setStep("success");
-        },
-      }
-    );
+    // The actual booking is now created via Stripe Webhooks securely on the backend.
+    setStep("success");
   };
 
   // Run confetti only ONCE when entering success step
