@@ -176,14 +176,14 @@ export function Navbar() {
                           <LayoutDashboard className="w-4 h-4" /> Dashboard
                         </Link>
                         <Link
-                          href="/profile"
+                          href="/dashboard?tab=settings"
                           onClick={() => setAvatarOpen(false)}
                           className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface hover:bg-surface-container-high transition-colors"
                         >
                           <User className="w-4 h-4" /> Profile
                         </Link>
                         <Link
-                          href="/settings"
+                          href="/dashboard?tab=settings"
                           onClick={() => setAvatarOpen(false)}
                           className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface hover:bg-surface-container-high transition-colors"
                         >

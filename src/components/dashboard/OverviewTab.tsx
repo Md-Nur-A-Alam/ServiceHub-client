@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
   Calendar, 
   Layers, 
@@ -220,6 +221,8 @@ export function OverviewTab({ role, onNavigate }: OverviewTabProps) {
         <div className="absolute right-0 bottom-0 top-0 w-1/3 opacity-10 bg-[radial-gradient(circle_at_center,_var(--color-primary)_0%,_transparent_100%)] hidden md:block" />
       </div>
 
+
+
       {/* Stats Cards Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((card) => {
@@ -227,11 +230,11 @@ export function OverviewTab({ role, onNavigate }: OverviewTabProps) {
           return (
             <div
               key={card.title}
-              className="bg-surface border border-outline-variant rounded-2xl p-5 shadow-xs flex flex-col gap-3 justify-between hover:border-primary/50 transition-colors"
+              className="group bg-surface border border-outline-variant rounded-2xl p-5 shadow-xs flex flex-col gap-3 justify-between hover:shadow-md hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 cursor-default"
             >
               <div className="flex justify-between items-start">
                 <span className="text-xs font-bold text-on-surface/60 uppercase tracking-wider">{card.title}</span>
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${card.color}`}>
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${card.color}`}>
                   <Icon className="w-4 h-4" />
                 </div>
               </div>
@@ -243,6 +246,30 @@ export function OverviewTab({ role, onNavigate }: OverviewTabProps) {
           );
         })}
       </div>
+
+      {/* Analytics Chart */}
+      {role !== "admin" && (
+        <div className="bg-surface border border-outline-variant rounded-2xl p-6 shadow-xs">
+          <div className="mb-6">
+            <h3 className="font-bold text-on-surface text-lg">Activity Trend</h3>
+            <p className="text-xs text-on-surface/50 mt-1">Your recent booking activity over time</p>
+          </div>
+          <div className="h-[250px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={recentBookings.map((b: any, index: number) => ({ name: `Day ${index + 1}`, value: b.price })).reverse()}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-outline-variant)" opacity={0.5} />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-on-surface)', opacity: 0.5 }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-on-surface)', opacity: 0.5 }} dx={-10} tickFormatter={(val) => `$${val}`} />
+                <Tooltip 
+                  cursor={{ stroke: 'var(--color-outline-variant)', strokeWidth: 1, strokeDasharray: '3 3' }}
+                  contentStyle={{ backgroundColor: 'var(--color-surface)', borderRadius: '12px', border: '1px solid var(--color-outline-variant)', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} 
+                />
+                <Line type="monotone" dataKey="value" stroke="var(--color-primary)" strokeWidth={3} dot={{ r: 4, strokeWidth: 2, fill: 'var(--color-surface)' }} activeDot={{ r: 6 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
 
       {/* Recent Bookings or Actions (Only for Customer & Provider) */}
       {role !== "admin" && (

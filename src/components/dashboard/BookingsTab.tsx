@@ -65,8 +65,27 @@ export function BookingsTab({ role }: BookingsTabProps) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center p-12">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="space-y-6 animate-pulse">
+        <div>
+          <div className="h-8 w-48 bg-surface-container rounded-lg mb-2"></div>
+          <div className="h-4 w-72 bg-surface-container rounded-lg"></div>
+        </div>
+        <div className="bg-surface border border-outline-variant rounded-2xl overflow-hidden shadow-xs">
+          <div className="p-4 border-b border-outline-variant bg-surface-container/30">
+            <div className="h-6 w-1/3 bg-surface-container-high rounded-lg"></div>
+          </div>
+          <div className="divide-y divide-outline-variant">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="p-6 flex items-center justify-between">
+                <div className="space-y-2">
+                  <div className="h-5 w-40 bg-surface-container-high rounded-md"></div>
+                  <div className="h-4 w-24 bg-surface-container-high rounded-md"></div>
+                </div>
+                <div className="h-8 w-24 bg-surface-container-high rounded-full"></div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
