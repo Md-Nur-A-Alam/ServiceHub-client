@@ -240,4 +240,10 @@
   }
 }
 
+/* Hide Stripe test mode developer badge */
+iframe[src^="https://js.stripe.com/v3/b-"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
 
