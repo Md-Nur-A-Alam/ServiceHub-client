@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { 
@@ -45,7 +45,7 @@ const navItems: NavItem[] = [
   { id: "settings", label: "Settings", icon: Settings, roles: ["customer", "provider", "admin"] },
 ];
 
-export default function UnifiedDashboardPage() {
+function UnifiedDashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, isPending } = authClient.useSession();
@@ -235,5 +235,17 @@ export default function UnifiedDashboardPage() {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function UnifiedDashboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+      </div>
+    }>
+      <UnifiedDashboardContent />
+    </Suspense>
   );
 }
