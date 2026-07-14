@@ -103,15 +103,8 @@ export function BookingCard({ serviceId, price }: BookingCardProps) {
   };
 
   const handleBook = () => {
-    // Reverted back to client-side creation for seamless testing without Stripe CLI
-    createBooking.mutate(
-      { serviceId, date, timeSlot, notes },
-      {
-        onSuccess: () => {
-          setStep("success");
-        },
-      }
-    );
+    // Relies purely on the Stripe Webhook for secure, server-side creation and transactions.
+    setStep("success");
   };
 
   // Run confetti only ONCE when entering success step
