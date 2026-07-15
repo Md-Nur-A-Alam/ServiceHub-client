@@ -134,11 +134,11 @@ Building this wasn't all sunshine and rainbows. Here are the complex issues we e
 
 ```mermaid
 flowchart TD
-    Browser[🌐 Happy User] --> Next[⚛️ Next.js App Router]
-    Next -->|API Requests| Express[🚀 Express Server API]
-    Express --> MongoDB[(🍃 MongoDB)]
-    Express --> BetterAuth[🔐 Better Auth]
-    Express -.-> Pusher[🔔 Pusher Realtime]
+    Browser["Client Browser"] --> Next["Next.js App Router"]
+    Next -->|"API Requests"| Express["Express Server API"]
+    Express --> MongoDB[("MongoDB")]
+    Express --> BetterAuth["Better Auth"]
+    Express -.-> Pusher["Pusher Realtime"]
     Next -.-> Pusher
 ```
 
