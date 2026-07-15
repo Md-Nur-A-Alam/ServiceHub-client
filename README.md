@@ -208,5 +208,5 @@ Distributed under the ISC License. Because sharing is caring.
   <img src="public/Assets/developer_Nur.jpeg" alt="Nur - Developer" width="130" style="border-radius: 50%; border: 4px solid #3525cd; padding: 3px; box-shadow: 0 0 15px rgba(53,37,205,0.5);" />
   <br/>
   <h3>Built with ❤️ and excessive caffeine by Nur</h3>
-  <a href="https://github.com/Md-Nur-A-Alam">GitHub</a> • <a href="https://linkedin.com/">LinkedIn</a>
+  <a href="https://github.com/Md-Nur-A-Alam">GitHub</a> • <a href="https://www.linkedin.com/in/md-nur-a-alam13">LinkedIn</a>
 </div>
