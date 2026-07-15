@@ -44,7 +44,7 @@ export default function LoginPage() {
       if (error) {
         setErrorMsg(error.message || "Invalid credentials.");
       } else {
-        router.push("/dashboard");
+        router.push("/");
       }
     } catch (err: any) {
       setErrorMsg("An unexpected error occurred. Please try again.");
@@ -59,7 +59,7 @@ export default function LoginPage() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: `${window.location.origin}/dashboard`,
+        callbackURL: `${window.location.origin}/`,
       });
     } catch (err: any) {
       setErrorMsg("Failed to initialize Google Sign-in.");

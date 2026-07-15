@@ -11,6 +11,7 @@ const navItems = [
   { label: "Overview", href: "/admin", icon: LayoutDashboard },
   { label: "Moderation", href: "/admin/moderation", icon: ListFilter },
   { label: "Users", href: "/admin/users", icon: Users },
+  { label: "Audit Booking", href: "/admin/audit-booking", icon: ScrollText },
   { label: "Audit Log", href: "/admin/audit-log", icon: ScrollText },
 ];
 

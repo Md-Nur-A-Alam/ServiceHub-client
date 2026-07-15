@@ -46,13 +46,13 @@ export default function RegisterPage() {
         password: values.password,
         name: values.name,
         role: role,
-        callbackURL: `${window.location.origin}/dashboard`,
+        callbackURL: `${window.location.origin}/`,
       });
 
       if (error) {
         setErrorMsg(error.message || "Failed to create account.");
       } else {
-        router.push("/dashboard");
+        router.push("/");
       }
     } catch (err: any) {
       setErrorMsg("An unexpected error occurred. Please try again.");
@@ -67,7 +67,7 @@ export default function RegisterPage() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: `${window.location.origin}/dashboard`,
+        callbackURL: `${window.location.origin}/`,
       });
     } catch (err: any) {
       setErrorMsg("Failed to initialize Google Sign-in.");

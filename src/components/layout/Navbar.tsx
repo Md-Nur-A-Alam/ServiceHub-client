@@ -32,6 +32,7 @@ const providerNavLinks = [
 
 const adminNavLinks = [
   { label: "Explore", href: "/explore" },
+  { label: "Dashboard", href: "/dashboard" },
   { label: "Admin", href: "/admin" },
   { label: "Bookings", href: "/bookings" },
 ];

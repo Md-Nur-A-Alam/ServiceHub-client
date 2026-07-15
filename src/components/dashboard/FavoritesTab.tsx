@@ -73,30 +73,31 @@ export function FavoritesTab() {
             return (
               <div
                 key={id}
-                className="bg-surface border border-outline-variant rounded-2xl overflow-hidden shadow-xs hover:border-primary/50 transition-colors flex flex-col justify-between"
+                className="bg-surface border border-outline-variant rounded-2xl overflow-hidden shadow-xs hover:border-primary/50 transition-colors flex flex-col justify-between group"
               >
+                <div className="relative h-48 w-full bg-surface-container-high/20 overflow-hidden">
+                  {emoji.startsWith("http://") || emoji.startsWith("https://") || emoji.startsWith("/") ? (
+                    <img
+                      src={emoji}
+                      alt={service.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-6xl">
+                      {emoji}
+                    </div>
+                  )}
+                  <button
+                    onClick={() => removeMutation.mutate(id)}
+                    disabled={removeMutation.isPending}
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full border border-error/20 bg-surface/80 backdrop-blur-md hover:bg-error/15 text-error flex items-center justify-center cursor-pointer transition-colors z-10"
+                    title="Remove from Wishlist"
+                  >
+                    <Heart className="w-4 h-4 fill-error text-error" />
+                  </button>
+                </div>
+                
                 <div className="p-5 space-y-4">
-                  <div className="flex justify-between items-start">
-                    {emoji.startsWith("http://") || emoji.startsWith("https://") || emoji.startsWith("/") ? (
-                      <img
-                        src={emoji}
-                        alt={service.title}
-                        className="w-12 h-12 object-cover rounded-xl border border-outline-variant"
-                      />
-                    ) : (
-                      <span className="w-12 h-12 text-3xl flex items-center justify-center bg-surface-container-high/40 rounded-xl">
-                        {emoji}
-                      </span>
-                    )}
-                    <button
-                      onClick={() => removeMutation.mutate(id)}
-                      disabled={removeMutation.isPending}
-                      className="w-8 h-8 rounded-full border border-error/20 bg-error/5 hover:bg-error/15 text-error flex items-center justify-center cursor-pointer transition-colors"
-                      title="Remove from Wishlist"
-                    >
-                      <Heart className="w-4 h-4 fill-error text-error" />
-                    </button>
-                  </div>
                   <div>
                     <h3 className="font-bold text-on-surface text-base line-clamp-1">{service.title}</h3>
                     <p className="text-xs text-on-surface/50 mt-0.5 capitalize">{service.category} &bull; {service.location}</p>
