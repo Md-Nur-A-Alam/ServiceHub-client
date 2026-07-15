@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { authClient } from "@/lib/auth-client";
-import { User, Mail, Shield, ShieldCheck, Loader2, Camera, Key } from "lucide-react";
+import { User, Mail, Shield, ShieldCheck, Loader2, Camera } from "lucide-react";
 import { toast } from "react-toastify";
 import { uploadImageToImgBB } from "@/lib/uploadImage";
 
@@ -12,11 +12,6 @@ export function SettingsTab() {
   const [image, setImage] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
-  
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -61,7 +56,7 @@ export function SettingsTab() {
       setIsUploadingImage(true);
       const url = await uploadImageToImgBB(file);
       setImage(url);
-      
+
       // Auto-save image so they don't have to click save
       await authClient.updateUser({ image: url });
       await authClient.getSession();
@@ -72,40 +67,6 @@ export function SettingsTab() {
       setIsUploadingImage(false);
       // Reset input so the same file can be selected again if needed
       if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  };
-
-  const handlePasswordChange = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newPassword !== confirmPassword) {
-      toast.error("New passwords do not match.");
-      return;
-    }
-    if (newPassword.length < 6) {
-      toast.error("Password must be at least 6 characters.");
-      return;
-    }
-
-    try {
-      setIsChangingPassword(true);
-      const { error } = await authClient.changePassword({
-        newPassword: newPassword,
-        currentPassword: currentPassword,
-        revokeOtherSessions: true,
-      });
-
-      if (error) {
-        toast.error(error.message || "Failed to change password.");
-      } else {
-        toast.success("Password changed successfully!");
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-      }
-    } catch (err: any) {
-      toast.error("An unexpected error occurred.");
-    } finally {
-      setIsChangingPassword(false);
     }
   };
 
@@ -120,7 +81,7 @@ export function SettingsTab() {
   const user = session?.user;
   if (!user) return null;
 
-  const initials = user.name?.split(" ").slice(0,2).map(n => n[0]).join("").toUpperCase() || "?";
+  const initials = user.name?.split(" ").slice(0, 2).map(n => n[0]).join("").toUpperCase() || "?";
 
   return (
     <div className="space-y-8 max-w-2xl">
@@ -135,7 +96,7 @@ export function SettingsTab() {
 
       <div className="bg-surface border border-outline-variant rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm">
         <form onSubmit={handleSubmit} className="space-y-8">
-          
+
           {/* Avatar Section */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-6 pb-8 border-b border-outline-variant/60">
             <div className="relative group">
@@ -145,7 +106,7 @@ export function SettingsTab() {
                 ) : (
                   initials
                 )}
-                
+
                 {/* Hover Overlay */}
                 <button
                   type="button"
@@ -233,73 +194,6 @@ export function SettingsTab() {
             >
               {isUpdating && <Loader2 className="w-4 h-4 animate-spin" />}
               <span>Save Changes</span>
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Password Change Module (Only for users who didn't register via OAuth/Google) */}
-      <div className="bg-surface border border-outline-variant rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
-        <div>
-          <h3 className="font-extrabold text-on-surface text-xl flex items-center gap-2">
-            <Key className="w-5 h-5 text-primary" />
-            Change Password
-          </h3>
-          <p className="text-xs text-on-surface/60 mt-1">
-            Update your password to keep your account secure. (Not applicable if you signed in with Google)
-          </p>
-        </div>
-
-        <form onSubmit={handlePasswordChange} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-on-surface/70 uppercase tracking-widest mb-2">
-                Current Password
-              </label>
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-2xl border-2 border-outline-variant/60 bg-surface text-on-surface text-sm font-medium focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all"
-                placeholder="••••••••"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-xs font-bold text-on-surface/70 uppercase tracking-widest mb-2">
-                New Password
-              </label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-2xl border-2 border-outline-variant/60 bg-surface text-on-surface text-sm font-medium focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all"
-                placeholder="••••••••"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-on-surface/70 uppercase tracking-widest mb-2">
-                Confirm New Password
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-2xl border-2 border-outline-variant/60 bg-surface text-on-surface text-sm font-medium focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all"
-                placeholder="••••••••"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={isChangingPassword || !currentPassword || !newPassword || !confirmPassword}
-              className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface text-sm font-bold transition-all disabled:opacity-50 cursor-pointer"
-            >
-              {isChangingPassword && <Loader2 className="w-4 h-4 animate-spin" />}
-              <span>Update Password</span>
             </button>
           </div>
         </form>

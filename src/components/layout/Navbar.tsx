@@ -32,7 +32,6 @@ const providerNavLinks = [
 
 const adminNavLinks = [
   { label: "Explore", href: "/explore" },
-  { label: "Dashboard", href: "/dashboard" },
   { label: "Admin", href: "/admin" },
   { label: "Bookings", href: "/bookings" },
 ];
@@ -123,8 +122,8 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === link.href
-                      ? "text-primary bg-primary/10"
-                      : "text-on-surface/75 hover:text-on-surface hover:bg-surface-container-high"
+                    ? "text-primary bg-primary/10"
+                    : "text-on-surface/75 hover:text-on-surface hover:bg-surface-container-high"
                     }`}
                 >
                   {link.label}
