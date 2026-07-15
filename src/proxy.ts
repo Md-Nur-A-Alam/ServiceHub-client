@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Check for the better-auth session cookie
-  // Better Auth uses 'better-auth.session_token' or '__Secure-better-auth.session_token'
   const hasSession = 
     request.cookies.has("better-auth.session_token") || 
     request.cookies.has("__Secure-better-auth.session_token");
@@ -25,9 +24,14 @@ export function middleware(request: NextRequest) {
   // Redirect to login if user tries to access a protected route without a session
   if (isProtected && !hasSession) {
     const loginUrl = new URL('/login', request.url);
-    // Optionally preserve the original URL they were trying to access
     loginUrl.searchParams.set('callbackURL', path);
     return NextResponse.redirect(loginUrl);
+  }
+  
+  // Redirect to dashboard if logged-in user tries to access login/register
+  const isAuthRoute = path.startsWith("/login") || path.startsWith("/register");
+  if (isAuthRoute && hasSession) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   
   return NextResponse.next();
