@@ -1,18 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { authClient } from "@/lib/auth-client";
-import { User, Mail, Shield, ShieldCheck, Loader2 } from "lucide-react";
+import { User, Mail, Shield, ShieldCheck, Loader2, Camera } from "lucide-react";
 import { toast } from "react-toastify";
+import { uploadImageToImgBB } from "@/lib/uploadImage";
 
 export function SettingsTab() {
   const { data: session, isPending } = authClient.useSession();
   const [name, setName] = useState("");
+  const [image, setImage] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (session?.user) {
       setName(session.user.name || "");
+      setImage(session.user.image || "");
     }
   }, [session]);
 
@@ -26,15 +31,42 @@ export function SettingsTab() {
     try {
       setIsUpdating(true);
       await authClient.updateUser({
-        name: name.trim()
+        name: name.trim(),
+        image: image,
       });
       toast.success("Profile updated successfully!");
-      // Sync session state
       await authClient.getSession();
     } catch (err: any) {
       toast.error(err.message || "Failed to update profile.");
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload a valid image file");
+      return;
+    }
+
+    try {
+      setIsUploadingImage(true);
+      const url = await uploadImageToImgBB(file);
+      setImage(url);
+      
+      // Auto-save image so they don't have to click save
+      await authClient.updateUser({ image: url });
+      await authClient.getSession();
+      toast.success("Profile picture updated!");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to upload image.");
+    } finally {
+      setIsUploadingImage(false);
+      // Reset input so the same file can be selected again if needed
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -47,84 +79,123 @@ export function SettingsTab() {
   }
 
   const user = session?.user;
-
   if (!user) return null;
 
+  const initials = user.name?.split(" ").slice(0,2).map(n => n[0]).join("").toUpperCase() || "?";
+
   return (
-    <div className="space-y-6 max-w-xl">
+    <div className="space-y-8 max-w-2xl">
       <div>
-        <h2 className="text-xl sm:text-2xl font-black text-on-surface font-display">
-          Profile & Account Settings
+        <h2 className="text-2xl sm:text-3xl font-black text-on-surface font-display tracking-tight">
+          Profile Settings
         </h2>
-        <p className="text-xs text-on-surface/50 mt-0.5">
-          Manage your personal details and account configurations
+        <p className="text-sm text-on-surface/60 mt-1">
+          Manage your personal details, avatar, and account configurations.
         </p>
       </div>
 
-      <div className="bg-surface border border-outline-variant rounded-2xl p-6 space-y-6 shadow-xs">
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Avatar display */}
-          <div className="flex items-center gap-4 pb-4 border-b border-outline-variant/60">
-            <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xl font-bold font-display">
-              {user.name?.split(" ").slice(0,2).map(n => n[0]).join("").toUpperCase() || "?"}
+      <div className="bg-surface border border-outline-variant rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          
+          {/* Avatar Section */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-6 pb-8 border-b border-outline-variant/60">
+            <div className="relative group">
+              <div className="w-24 h-24 rounded-full overflow-hidden bg-primary/10 border-4 border-surface shadow-md flex items-center justify-center text-3xl font-black font-display text-primary relative">
+                {image ? (
+                  <img src={image} alt={user.name} className="w-full h-full object-cover" />
+                ) : (
+                  initials
+                )}
+                
+                {/* Hover Overlay */}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploadingImage}
+                  className="absolute inset-0 bg-black/50 text-white flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer disabled:opacity-100 disabled:bg-black/40"
+                >
+                  {isUploadingImage ? (
+                    <Loader2 className="w-6 h-6 animate-spin" />
+                  ) : (
+                    <>
+                      <Camera className="w-6 h-6 mb-1" />
+                      <span className="text-[10px] font-bold uppercase tracking-wider">Change</span>
+                    </>
+                  )}
+                </button>
+              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                accept="image/*"
+                className="hidden"
+              />
             </div>
             <div>
-              <h3 className="font-bold text-on-surface text-base">{user.name}</h3>
-              <p className="text-xs text-on-surface/50 capitalize mt-0.5">Account Role: <span className="font-semibold text-primary">{user.role}</span></p>
+              <h3 className="font-extrabold text-on-surface text-xl">{user.name}</h3>
+              <div className="flex items-center gap-2 mt-1.5">
+                <span className="px-2.5 py-1 rounded-md bg-primary/10 text-primary text-[10px] font-black uppercase tracking-wider">
+                  {user.role}
+                </span>
+                <span className="text-xs text-on-surface/50 font-medium">{user.email}</span>
+              </div>
             </div>
           </div>
 
           {/* Form Fields */}
-          <div className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-on-surface/75 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <User className="w-3.5 h-3.5 text-on-surface/40" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="md:col-span-2">
+              <label className="block text-xs font-bold text-on-surface/70 uppercase tracking-widest mb-2 flex items-center gap-2">
+                <User className="w-4 h-4 text-primary" />
                 <span>Full Name</span>
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-outline-variant bg-surface text-on-surface text-sm focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3.5 rounded-2xl border-2 border-outline-variant/60 bg-surface text-on-surface text-sm font-medium focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-on-surface/75 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <Mail className="w-3.5 h-3.5 text-on-surface/40" />
-                <span>Email Address (Read-only)</span>
+              <label className="block text-xs font-bold text-on-surface/70 uppercase tracking-widest mb-2 flex items-center gap-2">
+                <Mail className="w-4 h-4 text-primary" />
+                <span>Email Address</span>
               </label>
               <input
                 type="email"
                 readOnly
                 disabled
                 value={user.email}
-                className="w-full px-4 py-2.5 rounded-xl border border-outline-variant bg-surface-container/45 text-on-surface/60 text-sm focus:outline-none cursor-not-allowed"
+                className="w-full px-4 py-3.5 rounded-2xl border-2 border-outline-variant/30 bg-surface-container/30 text-on-surface/60 text-sm font-medium focus:outline-none cursor-not-allowed"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-on-surface/75 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5 text-on-surface/40" />
-                <span>Account Access Level</span>
+              <label className="block text-xs font-bold text-on-surface/70 uppercase tracking-widest mb-2 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" />
+                <span>Account Access</span>
               </label>
-              <div className="flex items-center gap-2 p-3 bg-surface-container/20 border border-outline-variant/60 rounded-xl">
-                <ShieldCheck className="w-4 h-4 text-success" />
-                <span className="text-xs font-semibold text-on-surface/80 capitalize">
-                  Authorized as {user.role} account
+              <div className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-success/20 bg-success/5">
+                <ShieldCheck className="w-5 h-5 text-success" />
+                <span className="text-sm font-bold text-on-surface/80 capitalize">
+                  {user.role} Privileges
                 </span>
               </div>
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={isUpdating}
-            className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-xs font-bold hover:bg-primary/95 transition-colors disabled:opacity-55 cursor-pointer"
-          >
-            {isUpdating && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-            <span>Save Profile Settings</span>
-          </button>
+          <div className="pt-4 flex justify-end">
+            <button
+              type="submit"
+              disabled={isUpdating}
+              className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-on-primary text-sm font-bold hover:brightness-110 active:brightness-95 transition-all disabled:opacity-50 cursor-pointer shadow-md shadow-primary/20"
+            >
+              {isUpdating && <Loader2 className="w-4 h-4 animate-spin" />}
+              <span>Save Changes</span>
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -115,8 +115,12 @@ function UnifiedDashboardContent() {
     <div className="flex flex-col h-full bg-surface-container">
       {/* Brand / Role header */}
       <div className="h-16 flex items-center gap-3 px-6 border-b border-outline-variant">
-        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-black font-display uppercase">
-          {userRole[0]}
+        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-black font-display uppercase overflow-hidden">
+          {user?.image ? (
+            <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+          ) : (
+            userRole[0]
+          )}
         </div>
         <div>
           <span className="font-extrabold text-on-surface font-display text-sm tracking-wide block capitalize">
@@ -223,8 +227,12 @@ function UnifiedDashboardContent() {
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
-              {user.name?.charAt(0).toUpperCase()}
+            <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs overflow-hidden border border-primary/20">
+              {user?.image ? (
+                <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                user.name?.charAt(0).toUpperCase()
+              )}
             </div>
           </div>
         </header>

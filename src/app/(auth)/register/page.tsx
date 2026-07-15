@@ -46,6 +46,7 @@ export default function RegisterPage() {
         password: values.password,
         name: values.name,
         role: role,
+        callbackURL: `${window.location.origin}/dashboard`,
       });
 
       if (error) {

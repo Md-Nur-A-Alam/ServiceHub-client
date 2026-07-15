@@ -94,7 +94,10 @@ export default function AuditLogPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 font-mono text-xs text-on-surface/85 capitalize">{log.targetType}</td>
-                    <td className="px-6 py-4 font-mono text-xs text-on-surface/50">{log.targetId}</td>
+                    <td className="px-6 py-4">
+                      <span className="font-semibold text-on-surface text-sm block">{log.targetName || "Unknown"}</span>
+                      <span className="font-mono text-[10px] text-on-surface/50 block mt-0.5">{log.targetId}</span>
+                    </td>
                     <td className="px-6 py-4 text-on-surface/70">
                       {new Date(log.timestamp).toLocaleString(undefined, {
                         dateStyle: "medium",
@@ -129,8 +132,9 @@ export default function AuditLogPage() {
                       Admin: <strong className="text-on-surface">{log.admin?.name || "System"}</strong>
                     </p>
                     <p>
-                      Target: <span className="font-semibold">{log.targetType}</span> (
-                      <span className="font-mono text-[10px] text-on-surface/50">{log.targetId}</span>)
+                      Target: <span className="font-semibold">{log.targetType}</span> ({log.targetName || "Unknown"})
+                      <br />
+                      <span className="font-mono text-[10px] text-on-surface/50">{log.targetId}</span>
                     </p>
                   </div>
                 </div>

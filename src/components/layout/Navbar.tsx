@@ -149,8 +149,12 @@ export function Navbar() {
                       aria-label="User menu"
                       aria-expanded={avatarOpen}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary text-xs font-bold">
-                        {getInitials(user?.name)}
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary text-xs font-bold overflow-hidden border border-outline-variant">
+                        {user?.image ? (
+                          <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+                        ) : (
+                          getInitials(user?.name)
+                        )}
                       </div>
                       <span className="text-sm font-medium text-on-surface max-w-[100px] truncate">
                         {user?.name?.split(" ")[0]}
