@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import { User, Mail, Lock, Loader2, AlertCircle } from "lucide-react";
 
@@ -23,10 +23,19 @@ type RegisterFormValues = zod.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { data: session, isPending } = authClient.useSession();
   const [role, setRole] = useState<"customer" | "provider">("customer");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isPending && session) {
+      const callbackURL = searchParams.get("callbackURL") || "/dashboard";
+      router.push(callbackURL);
+    }
+  }, [session, isPending, router, searchParams]);
 
   const {
     register,
