@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🚀 ServiceHub Client</h1>
+  <h1>ServiceHub Client</h1>
   <p><b>The gorgeous frontend interface of the ServiceHub local-service-booking marketplace.</b></p>
   <p><i>Because finding a trustworthy plumber shouldn't be harder than fixing the pipe yourself! 🛠️</i></p>
   
