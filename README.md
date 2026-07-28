@@ -19,8 +19,8 @@ Why read documentation when you can just click things? Test drive the platform!
 - 🗄️ **Backend Repo:** [ServiceHub-server](https://github.com/Md-Nur-A-Alam/ServiceHub-server)
 
 > **🔑 Magic Keys (Demo Customer)**  
-> **Email:** `customer@gmail.com`  
-> **Password:** `Customer@123`
+> **Email:-** `customer@gmail.com`  
+> **Password:-** `Customer@123`
 
 ---
 
